@@ -40,7 +40,7 @@ export default class App extends React.Component {
       <View style={styles.containdr}>
         <Deck
           data = {DATA}
-          renderCard = {this.renderCard}
+          renderCard = {this.renderCard}          
         />
       </View>
     );
