@@ -1,5 +1,13 @@
 import React, { Component } from 'react'
-import { View, PanResponder, Animated, Dimensions } from 'react-native'
+import {
+   View,
+   PanResponder,
+   Animated,
+   Dimensions,
+   Platform,
+   LayoutAnimation,
+   UIManager
+   } from 'react-native'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
@@ -42,6 +50,9 @@ class Deck extends Component {
     this.state = { panResponder, position, index: 0 };
   }
 
+  componentWillUpdate() {
+    
+  }
   forceSwipe(direction) {
     const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
     Animated.timing(this.state.position, {
@@ -78,24 +89,34 @@ class Deck extends Component {
   }
 
   renderCards() {
-    return this.props.data.map((item, index) => {
-        if ( index < this.state.index ) { return null; }
+    if (this.state.index >= this.props.data.length) {
+        return this.props.renderNoMoreCards();
+    }
 
-        if (index === this.state.index) {
+    return this.props.data.map((item, positionCard) => {
+        if ( positionCard < this.state.index ) { return null; }
+
+        if (positionCard === this.state.index) {
             return (
                <Animated.View
                  key={item.id}
-                 style={this.getCardStyle()}
+                 style={[this.getCardStyle(), styles.cardStyle]}
                {...this.state.panResponder.panHandlers}
                >
                  {this.props.renderCard(item)}
               </Animated.View>
-          )
+          );
         }
-       return this.props.renderCard(item);
-     });
-    }
 
+       return (
+        <Animated.View
+          key={item.id}
+          style={[styles.cardStyle, { top: 10 * (positionCard - this.state.index), left: 2 * (positionCard - this.state.index) }]}
+        >
+          {this.props.renderCard(item)}
+        </Animated.View>);
+     }).reverse();
+    }
 
   render() {
     return (
@@ -103,6 +124,21 @@ class Deck extends Component {
         {this.renderCards()}
       </View>
     )
+  }
+}
+
+const styles = {
+  cardStyle: {
+     position: 'absolute',
+     width: SCREEN_WIDTH,
+     ...Platform.select({
+         android: {
+           elevation: 1
+         },
+       }),
+  },
+  cardSon: {
+    position: 'relative'
   }
 }
 
