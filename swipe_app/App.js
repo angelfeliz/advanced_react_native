@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Deck from './src/Deck'
+import SomethingAnimated from './src/SomethingAnimated'
 import { Card, Button } from 'react-native-elements'
 
 const DATA = [
@@ -39,7 +40,7 @@ export default class App extends React.Component {
     return (
       <Card title="All Done!">
         <Text style={{marginBottom: 20}}>
-          There's no more content here!
+          There s no more content here!
         </Text>
         <Button
           backgroundColor="#03A9F4"
@@ -49,14 +50,20 @@ export default class App extends React.Component {
         </Button>
       </Card>)
   }
+
   render() {
     return (
       <View>
-        <Deck
-          data = {DATA}
-          renderCard = {this.renderCard}
-           renderNoMoreCards = {this.renderNoMoreCards}
-        />
+        <View>
+          <Deck
+             data = {DATA}
+             renderCard = {this.renderCard}
+             renderNoMoreCards = {this.renderNoMoreCards}
+          />
+        </View>
+        <View>
+           <SomethingAnimated/>
+        </View>
       </View>
     );
   }
@@ -69,4 +76,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
 });
