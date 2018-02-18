@@ -72,7 +72,7 @@ class Deck extends Component {
     const { onSwipeLeft, onSwipeRight, data } = this.props;
     const item = data[this.state.index];
 
-    direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
+    //direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
     this.state.position.setValue({ x:0, y: 0 });
     this.setState({ index: this.state.index + 1 });
   }
@@ -96,14 +96,29 @@ class Deck extends Component {
   }
 
   renderCards() {
-    if (this.state.index >= this.props.data.length) {
+   /*return this.props.data.map((item, index) => {
+      if(index === 0) {
+    return(<Animated.View
+      key={item.id}
+      style={this.getCardStyle()}
+    {...this.state.panResponder.panHandlers}
+    >
+      {this.props.renderCard(item)}
+   </Animated.View>)
+      }
+      return this.props.renderCard(item);
+  
+    })*/
+   if (this.state.index >= this.props.data.length) {
         return this.props.renderNoMoreCards();
     }
 
     return this.props.data.map((item, positionCard) => {
-        if ( positionCard < this.state.index ) { return null; }
 
-        if (positionCard === this.state.index) {
+        if ( positionCard < this.state.index ) { return null; }
+         
+
+        if (positionCard === this.state.index) {          
             return (
                <Animated.View
                  key={item.id}
@@ -118,7 +133,7 @@ class Deck extends Component {
        return (
         <Animated.View
           key={item.id}
-          style={[styles.cardStyle, { top: 10 * (positionCard - this.state.index), left: 2 * (positionCard - this.state.index) }]}
+          style={[styles.cardStyle, {top: 10 * (positionCard - this.state.index)}]}
         >
           {this.props.renderCard(item)}
         </Animated.View>);
@@ -127,7 +142,7 @@ class Deck extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{flexDirection:'column'}}>
         {this.renderCards()}
       </View>
     )
